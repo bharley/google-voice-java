@@ -250,6 +250,33 @@ public class Voice {
 	}
 
 	/**
+	 * Starts a Google voice connection with an auth token, optionally.
+	 * 
+	 * @param  user       The username
+	 * @param  pass       The password
+	 * @param  authToken  The authentication token to use
+	 * @param  printDebug Whether or not to print debug messages
+	 */
+	public Voice(String user, String pass, String authToken, String source, boolean printDebug) throws IOException {
+		if (source == null) {
+			source = "GoogleVoiceJava";
+		}
+
+		if (authToken != null) {
+			this.account_type = GOOGLE;
+			this.PRINT_TO_CONSOLE = printDebug;
+			this.authToken = authToken;
+			this.user = user;
+			this.pass = pass;
+			this.source = source;
+			this.general = getGeneral();
+			setRNRSEE();
+		} else {
+			init(user, pass, source, printDebug, GOOGLE, null, null);
+		}
+	}
+
+	/**
 	 * Instantiates a new voice. This constructor is deprecated. Try
 	 * Voice(String user, String pass) which automatically determines rnrSee and
 	 * assigns a source.
@@ -386,6 +413,13 @@ public class Voice {
 	public Voice(String user, String pass, String source,
 			boolean printDebugIntoToSystemOut, String accountType, String captchaResponse, String captchaToken) throws IOException {
 		init(user, pass, source, printDebugIntoToSystemOut, accountType, captchaResponse, captchaToken);
+	}
+
+	/**
+	 * @return the auth token
+	 */
+	public String getAuthToken() {
+		return this.authToken;
 	}
 
 	/**
